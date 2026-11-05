@@ -1,0 +1,12 @@
+- id: session-telemetry-otel
+  disabled: true
+- id: session-title-llm
+  disabled: true
+- id: conversation-guard
+  config:
+    stateDirectory: !!js process.env.DSH_HOME + '/evidence-state'
+    apiKeyEnv: GUARD_UNCONFIGURED_CREDENTIAL
+    questionTimeoutMs: 100
+- insert:
+    - id: guard-evidence-smoke
+      name: ./evidence-smoke.mjs

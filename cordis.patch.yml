@@ -1,0 +1,3 @@
+- insert:
+    - id: conversation-guard
+      name: dsh-conversation-guard

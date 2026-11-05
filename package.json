@@ -1,0 +1,69 @@
+{
+  "name": "dsh-conversation-guard",
+  "version": "0.1.0-rc.2",
+  "description": "Task-aware message admission and evidence-based recovery for DeepSeek Harness",
+  "type": "module",
+  "license": "MIT",
+  "author": "myboker (https://github.com/myboker)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myboker/dsh-conversation-guard.git"
+  },
+  "homepage": "https://github.com/myboker/dsh-conversation-guard#readme",
+  "bugs": {
+    "url": "https://github.com/myboker/dsh-conversation-guard/issues"
+  },
+  "keywords": ["dsh-plugin", "deepseek-harness", "conversation-guard", "multi-agent", "handoff"],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": "./lib/index.js",
+    "./core": "./lib/core.js"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=24.0.0",
+    "dsh": "0.2.2-alpha.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "tsx --test tests/*.test.ts",
+    "check": "npm run build && npm test",
+    "test:live": "tsx scripts/live-eval.ts",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "4.0.6-alpha.2",
+    "@deepseek-ai/schemastery": "3.18.5-alpha.1",
+    "@deepseek-ai/dsh-agent": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-commands": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-llm": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-session": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-tools": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-user-questions": "0.2.2-alpha.3"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "4.0.6-alpha.2",
+    "@deepseek-ai/schemastery": "3.18.5-alpha.1",
+    "@deepseek-ai/dsh": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-agent": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-commands": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-llm": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-session": "0.2.2-alpha.3",
+    "@deepseek-ai/dsh-tools": "0.2.2-alpha.3",
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "6.0.3",
+    "@deepseek-ai/dsh-user-questions": "0.2.2-alpha.3"
+  }
+}
