@@ -4,22 +4,28 @@
 
 An independent community plugin for DeepSeek Harness that checks whether an incoming message belongs to the current task. It pauses potentially misrouted messages for human confirmation. If work has already been done in the wrong conversation, the agent can write a short handoff, with links to evidence associated with that request.
 
-The current community preview is `0.1.0-rc.2`. It supports and has been tested with **DSH 0.2.2-alpha.3 and Node.js 24 or later**. Compatibility with other DSH prereleases is not claimed. This is an independent community project.
+The current community preview is `0.1.0-rc.3`. It supports and has been tested with **DSH 0.2.2-alpha.3 or 0.2.2-rc.1, with Node.js 24.9 or later**. Compatibility with other DSH prereleases is not claimed. This is an independent community project.
+
+## Demo
+
+[Recorded offline demo and reproduction steps](https://github.com/myboker/dsh-conversation-guard/blob/main/docs/demo/README.md): a misrouted message is held, human confirmation is checked, and a deliberately missed detection produces a short handoff with scoped evidence. The DSH runtime and plugin are real; classifier and worker responses are scripted, so this is not a model accuracy demonstration.
+
+![Recorded offline demo: paused message and scoped handoff](https://raw.githubusercontent.com/myboker/dsh-conversation-guard/main/docs/demo/demo.jpg)
 
 ## Installation
 
-Install the matching DSH version, then download `dsh-conversation-guard-0.1.0-rc.2.tgz` from the [GitHub release](https://github.com/myboker/dsh-conversation-guard/releases/tag/v0.1.0-rc.2). DSH Desktop users should check that the bundled DSH version matches before using its plugin installer. The following CLI workflow has been verified.
+Install the matching DSH version, then download `dsh-conversation-guard-0.1.0-rc.3.tgz` from the [GitHub release](https://github.com/myboker/dsh-conversation-guard/releases/tag/v0.1.0-rc.3). DSH Desktop users should check that the bundled DSH version matches before using its plugin installer. The following CLI workflow has been verified.
 
 ```sh
-dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.2.tgz
+dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.3.tgz
 dsh --profile guard-demo --dump-config
 ```
 
-This creates a profile based on DSH's base template. For an interactive interface, create the profile from the official web or tui template before installing the plugin. For example:
+This creates a profile based on DSH's base template. For an interactive interface, create the profile from the official web or tui template before installing the plugin. Use an unused profile name: `--from-default-profile` replaces an existing profile with that name. For example:
 
 ```sh
 dsh --profile guard-demo --from-default-profile web --dump-config
-dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.2.tgz
+dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.3.tgz
 ```
 
 The model API key is read from the `DEEPSEEK_API_KEY` environment variable at startup, rather than stored in the plugin configuration. Set it in the environment of the process that starts DSH, then run `dsh --profile guard-demo`. The plugin's classifier reads this variable independently; saving credentials for the working model on DSH's Models page does not set the classifier's environment variable.
@@ -88,7 +94,7 @@ Super-agent retains its existing authorization and handback behavior. Work outsi
 
 ## Validation and limitations
 
-For source development, run `npm ci` and `npm run check`, then use `npm pack` to build an installation package. `npm run check` runs type checking and 37 deterministic tests without a model API key. With `DEEPSEEK_API_KEY` set, `npm run test:live` runs 20 synthetic semantic cases, writes reports to the ignored `reports/` directory, and consumes API credits. Development profile drivers are in `scripts/`. Two of them, `smoke-driver.mjs` and `evidence-smoke.mjs`, depend on build outputs from an adjacent Super-agent checkout with the adapter patch; they cannot run from a standalone clone of this repository. Ordinary plugin installation and `npm run check` do not depend on Super-agent.
+For source development, run `npm ci` and `npm run check`, then use `npm pack` to build an installation package. `npm run check` runs type checking and 37 deterministic tests without a model API key. With `DEEPSEEK_API_KEY` set, `npm run test:live` runs 20 synthetic semantic cases, writes reports to the ignored `reports/` directory, and consumes API credits. Run `npm run demo` for the standalone offline integration demo, including restart recovery, in a fresh temporary DSH home. It needs no model key; initial dependency/profile installation may use the network. Development profile drivers are in `scripts/`. Two of them, `smoke-driver.mjs` and `evidence-smoke.mjs`, depend on build outputs from an adjacent Super-agent checkout with the adapter patch; they cannot run from a standalone clone of this repository. Ordinary plugin installation and `npm run check` do not depend on Super-agent.
 
 Validation covered pausing, approval, cancellation, expired confirmations, restart recovery, native answer validation, batch ordering, tool blocking, isolation of unrelated conversations, handoffs, and the Super-agent adapter. The live model sample is small and should not be treated as a production accuracy estimate. Fine-grained classification labels do not grant permissions. Attachments trigger human review; the plugin does not perform image interpretation.
 

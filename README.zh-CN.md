@@ -4,22 +4,28 @@
 
 一个独立的 DeepSeek Harness 社区插件：根据当前任务判断新消息是否可能发错会话，暂停可疑消息，请人确认；误做后由 agent 写简短交接说明，插件提供与该请求关联的证据查询入口。
 
-当前社区预览版为 `0.1.0-rc.2`。支持并测试 **DSH 0.2.2-alpha.3、Node.js 24 及以上**；不声明兼容其他预发行版本。本项目是独立社区插件。
+当前社区预览版为 `0.1.0-rc.3`。支持并测试 **DSH 0.2.2-alpha.3 或 0.2.2-rc.1、Node.js 24.9 及以上**；不声明兼容其他预发行版本。本项目是独立社区插件。
+
+## 演示
+
+[离线演示记录与复现步骤](https://github.com/myboker/dsh-conversation-guard/blob/main/docs/demo/README.md)：展示串台消息暂停、人类确认，以及故意模拟漏判后的简短交接和证据回查。DSH 运行时和插件均为实际运行，分类器和工作模型使用固定回复，因此这不是模型识别准确率演示。
+
+![离线演示实际输出：消息暂停与限定范围的交接](https://raw.githubusercontent.com/myboker/dsh-conversation-guard/main/docs/demo/demo.jpg)
 
 ## 安装试用
 
-先安装对应版本的 DSH，再从 [GitHub Release](https://github.com/myboker/dsh-conversation-guard/releases/tag/v0.1.0-rc.2) 下载 `dsh-conversation-guard-0.1.0-rc.2.tgz`。已有 DSH Desktop 的用户，应确认内置版本匹配，再使用它提供的插件安装入口；下面是已验证的 CLI 流程。
+先安装对应版本的 DSH，再从 [GitHub Release](https://github.com/myboker/dsh-conversation-guard/releases/tag/v0.1.0-rc.3) 下载 `dsh-conversation-guard-0.1.0-rc.3.tgz`。已有 DSH Desktop 的用户，应确认内置版本匹配，再使用它提供的插件安装入口；下面是已验证的 CLI 流程。
 
 ```sh
-dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.2.tgz
+dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.3.tgz
 dsh --profile guard-demo --dump-config
 ```
 
-这会创建基于 DSH base 的 profile。若需要交互界面，先从官方 web 或 tui 模板创建该 profile，再安装插件，例如：
+这会创建基于 DSH base 的 profile。若需要交互界面，先从官方 web 或 tui 模板创建该 profile，再安装插件。请使用尚未存在的 profile 名称，`--from-default-profile` 会替换同名的已有 profile。例如：
 
 ```sh
 dsh --profile guard-demo --from-default-profile web --dump-config
-dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.2.tgz
+dsh plugin --profile guard-demo add /absolute/path/dsh-conversation-guard-0.1.0-rc.3.tgz
 ```
 
 模型密钥从启动环境变量 `DEEPSEEK_API_KEY` 读取，不写入插件配置。请在启动 DSH 的进程环境中设置它，然后运行 `dsh --profile guard-demo`。插件的分类器独立读取该变量；仅在 DSH Models 页面保存工作模型凭据，不等于已经为分类器设置环境变量。
@@ -88,7 +94,7 @@ Super-agent 保留原有授权和 handback。任务超出 Mandate 时仍需重�
 
 ## 验证与边界
 
-从源码开发时，运行 `npm ci`、`npm run check`，再用 `npm pack` 生成安装包。`npm run check` 运行类型检查和 37 项确定性测试，不需要模型密钥。`DEEPSEEK_API_KEY` 已设置时，`npm run test:live` 运行 20 个合成语义案例，报告写入忽略的 `reports/`，会消耗 API 额度。开发用 profile 驱动见 `scripts/`；其中 `smoke-driver.mjs` 和 `evidence-smoke.mjs` 依赖相邻、带适配补丁的 Super-agent checkout 构建产物，单独克隆本仓库不能直接运行这两份集成脚本。普通插件安装和 `npm run check` 不依赖 Super-agent。
+从源码开发时，运行 `npm ci`、`npm run check`，再用 `npm pack` 生成安装包。`npm run check` 运行类型检查和 37 项确定性测试，不需要模型密钥。`DEEPSEEK_API_KEY` 已设置时，`npm run test:live` 运行 20 个合成语义案例，报告写入忽略的 `reports/`，会消耗 API 额度。运行 `npm run demo` 可在全新的临时 DSH 目录中复现独立离线集成演示及重启恢复，不需要模型密钥；首次安装依赖或 profile 时可能联网。开发用 profile 驱动见 `scripts/`；其中 `smoke-driver.mjs` 和 `evidence-smoke.mjs` 依赖相邻、带适配补丁的 Super-agent checkout 构建产物，单独克隆本仓库不能直接运行这两份集成脚本。普通插件安装和 `npm run check` 不依赖 Super-agent。
 
 已验证消息暂停、批准、取消、过期确认、重启恢复、原生回答校验、批次顺序、工具阻断、独立会话不受影响、交接与 Super-agent 适配。真实模型样本规模较小，不能视为生产环境准确率；细分类结果不用于授权。附件只做人工暂停，不进行图像语义判断。
 

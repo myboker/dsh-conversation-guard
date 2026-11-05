@@ -1,6 +1,6 @@
 {
   "name": "dsh-conversation-guard",
-  "version": "0.1.0-rc.2",
+  "version": "0.1.0-rc.3",
   "description": "Task-aware message admission and evidence-based recovery for DeepSeek Harness",
   "type": "module",
   "license": "MIT",
@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/myboker/dsh-conversation-guard/issues"
   },
-  "keywords": ["dsh-plugin", "deepseek-harness", "conversation-guard", "multi-agent", "handoff"],
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "conversation-guard",
+    "multi-agent",
+    "handoff"
+  ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "exports": {
@@ -33,38 +39,39 @@
     }
   },
   "engines": {
-    "node": ">=24.0.0",
-    "dsh": "0.2.2-alpha.3"
+    "node": ">=24.9.0",
+    "dsh": "0.2.2-alpha.3 || 0.2.2-rc.1"
   },
   "scripts": {
     "build": "tsc",
     "test": "tsx --test tests/*.test.ts",
     "check": "npm run build && npm test",
     "test:live": "tsx scripts/live-eval.ts",
+    "demo": "npm run build && node scripts/demo.mjs",
     "prepack": "npm run build"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "4.0.6-alpha.2",
-    "@deepseek-ai/schemastery": "3.18.5-alpha.1",
-    "@deepseek-ai/dsh-agent": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-commands": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-llm": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-session": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-tools": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-user-questions": "0.2.2-alpha.3"
+    "@deepseek-ai/cordis": "4.0.6-alpha.2 || 4.1.0",
+    "@deepseek-ai/schemastery": "3.18.5-alpha.1 || 3.19.0",
+    "@deepseek-ai/dsh-agent": "0.2.2-alpha.3 || 0.2.2-rc.1",
+    "@deepseek-ai/dsh-commands": "0.2.2-alpha.3 || 0.2.2-rc.1",
+    "@deepseek-ai/dsh-llm": "0.2.2-alpha.3 || 0.2.2-rc.1",
+    "@deepseek-ai/dsh-session": "0.2.2-alpha.3 || 0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.2-alpha.3 || 0.2.2-rc.1",
+    "@deepseek-ai/dsh-user-questions": "0.2.2-alpha.3 || 0.2.2-rc.1"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "4.0.6-alpha.2",
-    "@deepseek-ai/schemastery": "3.18.5-alpha.1",
-    "@deepseek-ai/dsh": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-agent": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-commands": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-llm": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-session": "0.2.2-alpha.3",
-    "@deepseek-ai/dsh-tools": "0.2.2-alpha.3",
+    "@deepseek-ai/cordis": "4.1.0",
+    "@deepseek-ai/schemastery": "3.19.0",
+    "@deepseek-ai/dsh": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-agent": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-commands": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-session": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.2-rc.1",
     "@types/node": "^24.0.0",
     "tsx": "^4.20.0",
     "typescript": "6.0.3",
-    "@deepseek-ai/dsh-user-questions": "0.2.2-alpha.3"
+    "@deepseek-ai/dsh-user-questions": "0.2.2-rc.1"
   }
 }

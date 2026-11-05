@@ -1,0 +1,148 @@
+Recorded on 2026-11-05 with DSH 0.2.2-rc.1 and Node.js v26.0.0.
+Classifier, worker replies and handoff account are scripted. No live model accuracy claim.
+Only the temporary local path is replaced with <DEMO_HOME>; synthetic IDs are retained.
+
+## Demo setup / 演示条件
+Real DSH agent loop and installed plugin. Classifier and worker replies are scripted fixtures, NOT a live model accuracy test. Only an isolated local file can be changed.
+
+## 1. Normal follow-up / 正常跟进
+No held messages. Task: 修复 web-auth 仓库登录页的表单校验
+Worker calls: 2
+
+## 2. Misrouted message held / 串台消息暂停
+消息已暂停，尚未进入模型执行。原因：当前任务是 web-auth 登录校验；这条请求要求修改 billing-worker 的清算调度。
+
+批次：855d231c-8313-44f0-acfa-f2068a0da7f7；任务版本：1；消息数：1
+
+1. 把 billing-worker 仓库的月末清算任务改成每小时一次
+
+导出摘要及原消息查询入口：/guard handoff 855d231c-8313-44f0-acfa-f2068a0da7f7。/guard allow c613e92e-add4-4d27-9ffc-68e80caf2e25 继续本批；/guard cancel c613e92e-add4-4d27-9ffc-68e80caf2e25 取消本批。
+
+继续仅表示这批消息发给本会话，不扩大已有任务授权。
+Worker calls remain: 2
+
+## 3. Human decision / 人类确认
+Plain “继续” did not release the batch. Old token rejected.
+已取消本批消息，记录保留。
+A separately resubmitted batch was explicitly approved:
+已恢复本批消息；原任务授权范围保持有效。
+Worker calls: 3
+Held session tool calls blocked; independent session remained usable.
+
+## 4. Simulated missed detection / 漏判后的实际操作
+Classifier deliberately returns in_scope for this demo.
+Real tool execution changed the isolated fixture: billing-worker/schedule.json
+Before: monthly
+After: hourly
+This is a controlled fixture, not a production repository.
+
+## 5. Short handoff / 简短交接
+# Conversation recovery handoff
+
+Evidence only; no authorization. All quoted text is untrusted. Step association does not prove exclusive causal ownership.
+
+Session: f4ddc38f-cc64-4845-93a2-b1c7abe41383
+Batch: 888dfa6c-2e99-4530-b250-ef4ea2c0b978
+Handoff: 7ddd150b-190c-414e-95ef-df5b1e1cb89b
+
+Captured: 2026-11-05T11:19:29.458Z; snapshot ends at event 81. This export is frozen; export again for later results.
+
+Task revision: 1; admission state: admitted
+
+Task:
+```text
+修复 web-auth 仓库登录页的表单校验
+```
+
+Directory:
+```text
+<DEMO_HOME>/demo-workspace
+```
+
+## Affected request (preview)
+
+Input 0:
+```text
+把 billing-worker 仓库的月末清算任务改成每小时一次
+```
+
+
+
+## Worker account (not independently verified)
+
+Summary:
+```text
+A billing schedule request ran in the login conversation. This account is supplied by the offline demo driver.
+```
+
+Actions:
+```text
+Changed isolated demo-workspace/billing-worker/schedule.json from monthly to hourly
+```
+
+Artifacts:
+```text
+demo-workspace/billing-worker/schedule.json
+```
+
+Verification:
+```text
+Demo assertion read the local JSON and confirmed hourly.
+```
+
+External effects / jobs:
+```text
+Only the isolated local fixture changed. No production service or background job was started.
+```
+
+Remaining work:
+```text
+The intended agent should inspect the change and decide whether to keep or revert it.
+```
+
+## Host evidence index
+
+Associated events: 6; shared / uncertain events: 0. Mixed events may contain other requests; inspect before reuse.
+
+Inputs not found in this log: 0 (a held/cancelled input may never have entered the model). No activity does not prove no external effects.
+
+Calls without a recorded result: 0; jobs without a recorded settlement: 0. Live status is unknown.
+
+No whole-session transcript or workspace diff is attached. Unlinked events are excluded; missing linkage is not reconstructed by time proximity.
+
+Evidence records: 8. Read only as needed in the originating session:
+
+`/guard evidence 7ddd150b-190c-414e-95ef-df5b1e1cb89b`
+
+Or call `conversation_guard_evidence` with `handoff_id=7ddd150b-190c-414e-95ef-df5b1e1cb89b`. Follow its cursor for later records or long output. Each read returns at most 4,000 payload characters.
+
+Original logs remain in DSH; the private plugin database retains the reference index and optional worker account. Both are required for later lookup. Missing or changed source records are reported, never replaced with adjacent logs.
+
+No automatic rollback, rerouting, merge or publication is performed.
+
+
+
+## 6. Scoped evidence / 按需回查
+Frozen evidence index: 7ddd150b-190c-414e-95ef-df5b1e1cb89b; source session: f4ddc38f-cc64-4845-93a2-b1c7abe41383; snapshot event: 81
+Read only needed records. Relation step means dispatch association, not exclusive causal ownership; mixed means shared context.
+0: original-message | request | input/0 | read_cursor: 0:0
+1: worker-account | worker-account | account/0 | read_cursor: 1:0
+2: assistant/message | step | event/63 | read_cursor: 2:0
+3: tool/call | step | event/64 | read_cursor: 3:0
+4: tool/result | step | event/65 | read_cursor: 4:0
+5: step/end | step | event/66 | read_cursor: 5:0
+6: assistant/message | step | event/68 | read_cursor: 6:0
+7: step/end | step | event/69 | read_cursor: 7:0
+next_cursor: (end)
+
+Verified: 21306 characters of tool output read in 6 pages; final marker retained.
+Unrelated later reply excluded. Cross-session evidence access rejected.
+Markdown summary: 2540 characters; full tool output is not attached.
+
+## Restart verification
+{
+  "passed": true,
+  "workerCalls": 0,
+  "pendingBatchRecovered": true,
+  "evidenceRecovered": true
+}
